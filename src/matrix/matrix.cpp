@@ -173,7 +173,7 @@ void parallelTest(int dimension){
 }
 
 int main()
-{	
+{
     int dimension = 3;
 
 	serialTest(dimension);
