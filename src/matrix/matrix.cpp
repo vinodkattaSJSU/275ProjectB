@@ -68,7 +68,7 @@ void serialTest(int dimension){
 	std::cout << "Time in milliseconds for serial initialization of a and b : " << ms.count() << std::endl;
 
 	FILE* pFile;
-	pFile = fopen("../../results/initializationTimes.txt", "a+");
+	pFile = fopen("results/initializationTimes.txt", "a+");
 	fprintf(pFile, "----------------------------------\n");
 	fprintf(pFile, "Test : Serial Initialization      \n");
 	fprintf(pFile, "----------------------------------\n");
@@ -83,7 +83,7 @@ void serialTest(int dimension){
 	double totalTime = serialMultiply(a, b, sol, dimension);
 
 	FILE* pFile1;
-	pFile1 = fopen("../../results/multiplicationTimes.txt", "a+");
+	pFile1 = fopen("results/multiplicationTimes.txt", "a+");
 	fprintf(pFile1, "----------------------------------\n");
 	fprintf(pFile1, "Test : Serial Multiplication      \n");
 	fprintf(pFile1, "----------------------------------\n");
@@ -213,7 +213,7 @@ void parallelTest(int dimension){
 	std::cout << "Time in milliseconds: " << ms.count() << std::endl;
 
 	FILE* pFile;
-	pFile = fopen("../../results/initializationTimes.txt", "a+");
+	pFile = fopen("results/initializationTimes.txt", "a+");
 	fprintf(pFile, "----------------------------------\n");
 	fprintf(pFile, "Test : Parallel Initialization      \n");
 	fprintf(pFile, "----------------------------------\n");
@@ -228,7 +228,7 @@ void parallelTest(int dimension){
 	double totalTime = parallelMultiply(a, b, sol, dimension);
 
 	FILE * pFile1;
-	pFile1 = fopen("../../results/multiplicationTimes.txt", "a+");
+	pFile1 = fopen("results/multiplicationTimes.txt", "a+");
 	fprintf(pFile1, "----------------------------------\n");
 	fprintf(pFile1, "Test : Parallel Multiplication      \n");
 	fprintf(pFile1, "----------------------------------\n");
@@ -239,7 +239,7 @@ void parallelTest(int dimension){
 
   totalTime = parallelMultiplyNumThreads(a, b, sol, dimension);
 
-  pFile1 = fopen("../../results/multiplicationTimes.txt", "a+");
+  pFile1 = fopen("results/multiplicationTimes.txt", "a+");
   fprintf(pFile1, "----------------------------------\n");
   fprintf(pFile1, "Test : Parallel Multiplication with Number Of Threads: 4\n");
   fprintf(pFile1, "----------------------------------\n");
@@ -251,7 +251,7 @@ void parallelTest(int dimension){
 
   totalTime = parallelMultiplyDynamicChunk(a, b, sol, dimension);
 
-  pFile1 = fopen("../../results/multiplicationTimes.txt", "a+");
+  pFile1 = fopen("results/multiplicationTimes.txt", "a+");
   fprintf(pFile1, "----------------------------------\n");
   fprintf(pFile1, "Test : Parallel Multiplication with chunks: 3 for each thread\n");
   fprintf(pFile1, "----------------------------------\n");
@@ -262,7 +262,7 @@ void parallelTest(int dimension){
 
   totalTime = parallelMultipleLoops(a, b, sol, dimension);
 
-  pFile1 = fopen("../../results/multiplicationTimes.txt", "a+");
+  pFile1 = fopen("results/multiplicationTimes.txt", "a+");
   fprintf(pFile1, "----------------------------------\n");
   fprintf(pFile1, "Test : Parallel Nested Loops \n");
   fprintf(pFile1, "----------------------------------\n");
@@ -274,7 +274,7 @@ void parallelTest(int dimension){
   totalTime = parallelSIMDMultipleLoops(a, b, sol, dimension);
 
 
-  pFile1 = fopen("../../results/multiplicationTimes.txt", "a+");
+  pFile1 = fopen("results/multiplicationTimes.txt", "a+");
   fprintf(pFile1, "----------------------------------\n");
   fprintf(pFile1, "Test : Parallel SIMD multiple Loops\n");
   fprintf(pFile1, "----------------------------------\n");
