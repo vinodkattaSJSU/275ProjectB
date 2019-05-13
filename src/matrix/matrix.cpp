@@ -9,7 +9,7 @@ using namespace std::chrono;
 
 float** serialInitializeMatrix(int dimension){
 
-    float** matrix = (float**)malloc(dimension * sizeof(float*));
+  float** matrix = (float**)malloc(dimension * sizeof(float*));
 
 	for(int i=0; i < dimension; i++){
 		matrix[i] = (float*)malloc(dimension * sizeof(float));
@@ -27,7 +27,7 @@ float** serialInitializeMatrix(int dimension){
 
 float** initializeSolutionMatrix(int dimension){
 
-    float** matrix = (float**)malloc(dimension * sizeof(float*));
+  float** matrix = (float**)malloc(dimension * sizeof(float*));
 
 	for(int i=0; i < dimension; i++){
 		matrix[i] = (float*)malloc(dimension * sizeof(float));
@@ -92,14 +92,14 @@ void serialTest(int dimension){
 	fprintf(pFile1, "..................................\n");
 	fclose(pFile1);
 
-    free(a);
-    free(b);
-    free(sol);
+  free(a);
+  free(b);
+  free(sol);
 }
 
 float** parallelInitializeMatrix(int dimension){
 
-    float** matrix = (float**)malloc(dimension * sizeof(float*));
+  float** matrix = (float**)malloc(dimension * sizeof(float*));
 
 	for(int i=0; i < dimension; i++){
 		matrix[i] = (float*)malloc(dimension * sizeof(float));
@@ -189,7 +189,6 @@ double parallelMultipleLoops(float** const matrixA, float** const matrixB, float
 
 double parallelSIMDMultipleLoops(float** const matrixA, float** const matrixB, float** const sol, int dimension){
 	high_resolution_clock::time_point begin = high_resolution_clock::now();
-  // apply the threading to multiple nested iterations
 	#pragma omp simd collapse(3)
 	for(int i=0; i < dimension; i++){
 		for(int j=0; j < dimension; j++){
@@ -207,7 +206,7 @@ double parallelSIMDMultipleLoops(float** const matrixA, float** const matrixB, f
 
 void parallelTest(int dimension){
 	high_resolution_clock::time_point begin = high_resolution_clock::now();
-    float** a = parallelInitializeMatrix(dimension);
+  float** a = parallelInitializeMatrix(dimension);
 	float** b = parallelInitializeMatrix(dimension);
 	high_resolution_clock::time_point end = high_resolution_clock::now();
 	std::chrono::duration<double, std::milli> ms = end - begin;
@@ -284,9 +283,9 @@ void parallelTest(int dimension){
   fprintf(pFile1, "..................................\n");
   fclose(pFile1);
 
-    free(a);
-    free(b);
-    free(sol);
+  free(a);
+  free(b);
+  free(sol);
 }
 
 int main()
@@ -301,6 +300,7 @@ int main()
 }
 
 /*
+
 printf("Test : Serial Initialization      \n");
 printf("----------------------------------\n");
 printf("Dimension : %d\n", dimension);
@@ -349,4 +349,5 @@ printf("----------------------------------\n");
 printf("Dimension : %d\n", dimension);
 printf("Time in ms : %f\n",totalTime);
 printf("..................................\n");
+
 */
