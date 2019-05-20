@@ -288,13 +288,72 @@ void parallelTest(int dimension){
   free(sol);
 }
 
+double cache(int ** matrix, long int size, int blocksize){
+  
+	high_resolution_clock::time_point begin = high_resolution_clock::now();
+  
+  	for(int x = 0; x < size; x += blocksize){
+    	for(int i = x; i < x + blocksize; i++){
+      		for(int y = 0; y < size; y+= blocksize){
+        		__builtin_prefetch(&matrix[i][y + blocksize]);
+        		for(int j = y; j < y + blocksize; j++){
+          			matrix[i][j] = matrix[i][j] * 2;
+        		}
+      		}		
+    	}
+	}
+  
+ 	high_resolution_clock::time_point end = high_resolution_clock::now();
+	std::chrono::duration<double, std::milli> ms = end - begin;
+	
+	return ms.count();
+}
+
+void cacheComparison(){
+	int size = 32;
+
+	FILE* pFile;
+	pFile = fopen("results/cacheOptimization.txt", "a+");
+	while(size <= 2048){
+
+		int** matrix;
+		matrix = new int*[size];
+		for(long int i = 0; i < size; i++){
+			matrix[i] = new int[size];
+		}
+
+		for(int x = 0; x < size; x++){
+			for(int y = 0; y < size; y++){
+				matrix[x][y] = 1;
+			}
+		}
+
+		double totalTime = cache(matrix, size, size/2);
+		std::cout << "Time in milliseconds: " << totalTime << std::endl;
+
+		fprintf(pFile, "----------------------------------\n");
+  		fprintf(pFile, "Test : L1, L2 and L3 Cache Test\n");
+  		fprintf(pFile, "----------------------------------\n");
+  		fprintf(pFile, "Size : %d\n", size);
+  		fprintf(pFile, "Time in ms : %f\n", totalTime);
+  		fprintf(pFile, "..................................\n");
+		
+
+		size = size << 1;
+	}
+	fclose(pFile);
+
+}
+
 int main()
 {
-  int dimension = 3;
+  int dimension = 200;
 
 	serialTest(dimension);
 
 	parallelTest(dimension);
+
+	cacheComparison();
 
   return 0;
 }
