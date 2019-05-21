@@ -101,6 +101,7 @@ float** parallelInitializeMatrix(int dimension){
 
   float** matrix = (float**)malloc(dimension * sizeof(float*));
 
+	#pragma omp parallel for
 	for(int i=0; i < dimension; i++){
 		matrix[i] = (float*)malloc(dimension * sizeof(float));
 	}
@@ -171,7 +172,7 @@ double parallelMultiplyDynamicChunk(float** const matrixA, float** const matrixB
 double parallelMultipleLoops(float** const matrixA, float** const matrixB, float** const sol, int dimension){
 	high_resolution_clock::time_point begin = high_resolution_clock::now();
   // apply the threading to multiple nested iterations
-	#pragma omp parallel for collapse(3)
+	#pragma omp parallel for collapse(1)
 	for(int i=0; i < dimension; i++){
 		for(int j=0; j < dimension; j++){
 			for(int k=0; k < dimension; k++){
@@ -237,6 +238,17 @@ void parallelTest(int dimension){
 	fprintf(pFile1, "..................................\n");
 	fclose(pFile1);
 
+   totalTime = parallelSIMDMultipleLoops(a, b, sol, dimension);
+
+  pFile1 = fopen("results/multiplicationTimes.txt", "a+");
+  fprintf(pFile1, "----------------------------------\n");
+  fprintf(pFile1, "Test : Parallel SIMD multiple Loops\n");
+  fprintf(pFile1, "----------------------------------\n");
+  fprintf(pFile1, "Dimension : %d\n", dimension);
+  fprintf(pFile1, "Time in ms : %f\n", totalTime);
+  fprintf(pFile1, "..................................\n");
+  fclose(pFile1);
+
   totalTime = parallelMultiplyNumThreads(a, b, sol, dimension);
 
   pFile1 = fopen("results/multiplicationTimes.txt", "a+");
@@ -247,7 +259,6 @@ void parallelTest(int dimension){
   fprintf(pFile1, "Time in ms : %f\n", totalTime);
   fprintf(pFile1, "..................................\n");
   fclose(pFile1);
-
 
   totalTime = parallelMultiplyDynamicChunk(a, b, sol, dimension);
 
@@ -265,18 +276,6 @@ void parallelTest(int dimension){
   pFile1 = fopen("results/multiplicationTimes.txt", "a+");
   fprintf(pFile1, "----------------------------------\n");
   fprintf(pFile1, "Test : Parallel Nested Loops \n");
-  fprintf(pFile1, "----------------------------------\n");
-  fprintf(pFile1, "Dimension : %d\n", dimension);
-  fprintf(pFile1, "Time in ms : %f\n", totalTime);
-  fprintf(pFile1, "..................................\n");
-  fclose(pFile1);
-
-  totalTime = parallelSIMDMultipleLoops(a, b, sol, dimension);
-
-
-  pFile1 = fopen("results/multiplicationTimes.txt", "a+");
-  fprintf(pFile1, "----------------------------------\n");
-  fprintf(pFile1, "Test : Parallel SIMD multiple Loops\n");
   fprintf(pFile1, "----------------------------------\n");
   fprintf(pFile1, "Dimension : %d\n", dimension);
   fprintf(pFile1, "Time in ms : %f\n", totalTime);
@@ -347,7 +346,8 @@ void cacheComparison(){
 
 int main()
 {
-  int dimension = 200;
+	// Change matrix size here
+  int dimension = 400;
 
 	serialTest(dimension);
 
@@ -357,56 +357,3 @@ int main()
 
   return 0;
 }
-
-/*
-
-printf("Test : Serial Initialization      \n");
-printf("----------------------------------\n");
-printf("Dimension : %d\n", dimension);
-printf("Time in ms : %f\n", ms.count());
-printf("..................................\n");
-
-printf("Test : Serial Multiplication      \n");
-printf("----------------------------------\n");
-printf("Dimension : %d\n", dimension);
-printf("Time in ms : %f\n", totalTime);
-printf("..................................\n");
-
-
-printf("Test : Parallel Initialization      \n");
-printf("----------------------------------\n");
-printf("Dimension : %d\n", dimension);
-printf("Time in ms : %f\n", ms.count());
-printf("..................................\n");
-
-printf("Test : Parallel Multiplication      \n");
-printf("----------------------------------\n");
-printf("Dimension : %d\n", dimension);
-printf("Time in ms : %f\n",totalTime);
-printf("..................................\n");
-
-printf("Test : Parallel Multiplication with Number Of Threads: 4\n");
-printf("----------------------------------\n");
-printf("Dimension : %d\n", dimension);
-printf("Time in ms : %f\n",totalTime);
-printf("..................................\n");
-
-printf("Test : Parallel Multiplication with chunks: 3 for each thread \n");
-printf("----------------------------------\n");
-printf("Dimension : %d\n", dimension);
-printf("Time in ms : %f\n",totalTime);
-printf("..................................\n");
-
-printf("Test : Parallel Nested Loops \n");
-printf("----------------------------------\n");
-printf("Dimension : %d\n", dimension);
-printf("Time in ms : %f\n",totalTime);
-printf("..................................\n");
-
-printf("Test : Parallel SIMD multiple Loops \n");
-printf("----------------------------------\n");
-printf("Dimension : %d\n", dimension);
-printf("Time in ms : %f\n",totalTime);
-printf("..................................\n");
-
-*/
