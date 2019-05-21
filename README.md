@@ -10,7 +10,7 @@
 
 1. install gcc(https://gcc.gnu.org/install/)
 
-# Instructions to run
+# Steps to run:
 
 1. Run the `build.sh` file to generate different compiler executables
 
